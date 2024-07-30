@@ -1,13 +1,27 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { supabase } from '@/lib/supabase';
 
 const BarMenu = () => {
-  const [menuItems, setMenuItems] = useState([
-    { id: 1, name: 'Classic Martini', price: 12, description: 'Gin, dry vermouth, olive or lemon twist' },
-    { id: 2, name: 'Mojito', price: 10, description: 'White rum, sugar, lime juice, soda water, mint' },
-    { id: 3, name: 'Old Fashioned', price: 14, description: 'Bourbon, sugar cube, Angostura bitters, orange twist' },
-  ]);
+  const [menuItems, setMenuItems] = useState([]);
+
+  useEffect(() => {
+    fetchMenuItems();
+  }, []);
+
+  const fetchMenuItems = async () => {
+    const { data, error } = await supabase
+      .from('bar_menu')
+      .select('*')
+      .order('name', { ascending: true });
+
+    if (error) {
+      console.error('Error fetching menu items:', error);
+    } else {
+      setMenuItems(data);
+    }
+  };
 
   return (
     <div className="grid gap-6 mt-6">

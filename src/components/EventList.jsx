@@ -1,13 +1,27 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { supabase } from '@/lib/supabase';
 
 const EventList = () => {
-  const [events, setEvents] = useState([
-    { id: 1, title: 'Summer Music Festival', date: '2023-07-15', description: 'A day of live music and fun' },
-    { id: 2, title: 'Tech Conference 2023', date: '2023-08-22', description: 'Learn about the latest in technology' },
-    { id: 3, title: 'Food & Wine Expo', date: '2023-09-10', description: 'Taste cuisines from around the world' },
-  ]);
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  const fetchEvents = async () => {
+    const { data, error } = await supabase
+      .from('events')
+      .select('*')
+      .order('date', { ascending: true });
+
+    if (error) {
+      console.error('Error fetching events:', error);
+    } else {
+      setEvents(data);
+    }
+  };
 
   return (
     <div className="grid gap-6 mt-6">
