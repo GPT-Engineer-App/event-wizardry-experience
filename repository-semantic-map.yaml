@@ -1,0 +1,12 @@
+version: 1
+repository: davlindh/event-wizardry-experience
+purpose: Event orchestration and experience-design experiment.
+status: vertical-experiment
+canonical_parent: null
+capabilities: [events, orchestration, experience]
+vertical: events-culture
+omniframez_role: vertical-experiment
+evidence: {confidence: inferred, sources: [repository-name]}
+harvest_action: inspect-and-harvest-unique-capabilities
+relations:
+  - contributes_to: event orchestration capabilities
